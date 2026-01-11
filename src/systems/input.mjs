@@ -27,17 +27,34 @@ class InputSingleton {
      * Initializes the input system by setting up event listeners for keyboard and mouse.
      * @param {HTMLElement} domElement - The DOM element to attach click event listener to.
      */
-    init(domElement) {
+    init(domElementOrEngine) {
         if (this.initialized) return;
         this.initialized = true;
 
-        this.domElement = domElement;
+        if (domElementOrEngine?.renderer?.domElement) {
+            this.domElement = domElementOrEngine.renderer.domElement;
+        } else {
+            this.domElement = domElementOrEngine;
+        }
+
+        if (!this.domElement || typeof this.domElement.addEventListener !== "function") {
+            console.warn("Input.init: invalid domElement, defaulting to document.body");
+            this.domElement = document.body;
+        }
 
         window.addEventListener("keydown", this._down);
         window.addEventListener("keyup", this._up);
         window.addEventListener("mousemove", this._move);
         document.addEventListener("pointerlockchange", this._plc);
         this.domElement.addEventListener("click", this._click);
+    }
+
+    /**
+     * Update method for SystemManager compatibility
+     * @param {number} dt - Delta time
+     */
+    update(dt) {
+        // Input system handles events directly, no updates needed
     }
 
     pressed(code) {

@@ -1,13 +1,14 @@
 import * as THREE from "three";
-import { CONFIG } from "../config.mjs";
+import { CONFIG } from "../../config.mjs";
 import { FirstPersonController } from "./firstPersonController.mjs";
 import { Collider } from "./collider.mjs";
-import { Engine } from "../engine/engine.mjs";
+import { Engine } from "../../engine/engine.mjs";
+import { BaseEntity } from "./baseEntity.mjs";
 
-export class Player {
-    constructor({ camera, colliders }) {
+export class Player extends BaseEntity {
+    constructor({ camera }) {
+        super();
         this.camera = camera;
-        this.colliders = colliders;
 
         this.position = new THREE.Vector3(0, CONFIG.settings.player.height, 0);
 
@@ -37,7 +38,6 @@ export class Player {
         const vel = this.controller.update(dt);
 
         this.position.addScaledVector(vel, dt);
-        this.collider.resolve(this.position, this.colliders);
 
         this.position.y = CONFIG.settings.player.height;
         this.camera.position.copy(this.position);
@@ -47,5 +47,10 @@ export class Player {
             CONFIG.settings.lighting.playerLight.offset.y,
             CONFIG.settings.lighting.playerLight.offset.z
         ));
+    }
+
+    dispose() {
+        Engine.scene.remove(this.light);
+        this.light.dispose();
     }
 }
