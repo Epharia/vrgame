@@ -1,5 +1,6 @@
 import * as THREE from "three";
-import { Input } from "../systems/input.mjs";
+import { Input } from "../../systems/input.mjs";
+import { CONFIG } from "../../config.mjs";
 
 export class FirstPersonController {
     constructor(camera) {
@@ -8,10 +9,10 @@ export class FirstPersonController {
         this.yaw = 0;
         this.pitch = 0;
 
-        this.sensitivity = 0.002;
-        this.maxPitch = Math.PI / 2 - 0.1;
+        this.sensitivity = CONFIG.settings.controls.mouseSensitivity;
+        this.maxPitch = CONFIG.settings.controls.maxPitch;
 
-        this.moveSpeed = 3.0;
+        this.moveSpeed = CONFIG.settings.controls.moveSpeed;
 
         this._forward = new THREE.Vector3();
         this._right = new THREE.Vector3();
