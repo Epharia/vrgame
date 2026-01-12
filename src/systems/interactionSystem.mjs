@@ -52,7 +52,6 @@ class InteractionSystemSingleton {
         for (const inputSource of inputSources) {
             if (inputSource.handedness === 'right' && inputSource.gamepad) {
                 const gamepad = inputSource.gamepad;
-                // Trigger is typically on buttons[0] or axes[0]
                 if (gamepad.buttons.length > 0 && gamepad.buttons[0]) {
                     return gamepad.buttons[0].pressed;
                 }
@@ -61,6 +60,7 @@ class InteractionSystemSingleton {
         return false;
     }
 
+    //TODO FIX this mess
     /**
      * Get the world position of the right VR controller
      * @returns {THREE.Vector3|null} The world position or null if not available
@@ -78,15 +78,13 @@ class InteractionSystemSingleton {
 
     /**
      * Update interactions based on right controller position and VR trigger
-     * @param {THREE.Vector3} playerPosition - Current player position (fallback for non-VR)
      */
-    update(playerPosition) {
+    update() {
         if (!this.initialized) return;
 
         const triggerPressed = this.isRightTriggerPressed();
         const controllerPos = this.getRightControllerPosition();
 
-        // Only check the right controller position, not player position
         if (!controllerPos) return;
 
         for (const obj of this.interactiveObjects) {
@@ -94,7 +92,6 @@ class InteractionSystemSingleton {
 
             const isNear = obj.isWithinInteractionDistance(controllerPos);
 
-            // Activate only when right hand is near AND right trigger is pressed
             if (isNear && triggerPressed && !this.lastActivatedId.has(obj.id)) {
                 this.lastActivatedId.add(obj.id);
                 obj.activate();
