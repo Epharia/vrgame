@@ -69,12 +69,16 @@ class HUDSingleton {
             map: texture,
             transparent: true,
             opacity: 0,
-            side: THREE.DoubleSide
+            side: THREE.DoubleSide,
+            depthTest: false,
+            depthWrite: false
         });
 
         // Create plane geometry
         const geometry = new THREE.PlaneGeometry(2, 0.5);
         this.vrTextMesh = new THREE.Mesh(geometry, material);
+
+        this.vrTextMesh.renderOrder = 999;
 
         // Create group to position text in front of camera
         this.vrTextGroup = new THREE.Group();
