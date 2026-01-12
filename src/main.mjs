@@ -45,6 +45,11 @@ try {
     player.initVR();
     player.setColliders(colliders);
 
+    // Pass VR controller to interaction system
+    if (player.vrController) {
+        InteractionSystem.setVRController(player.vrController);
+    }
+
     // Game Loop
     Engine.setAnimationLoop(() => {
         const dt = Engine.time.delta();

@@ -37,13 +37,15 @@ export class GoalButton extends BaseEntity {
     }
 
     /**
-     * Check if a point is within interaction distance
+     * Check if a point is within interaction distance (touching the cube)
      * @param {THREE.Vector3} point - The point to check
      * @returns {boolean} Whether the point is within interaction distance
      */
     isWithinInteractionDistance(point) {
         const distance = this.position.distanceTo(point);
-        return distance <= CONFIG.settings.interact.maxDistance;
+        // Distance should be less than button size + small margin for touching
+        const touchDistance = this.buttonSize * 0.7;
+        return distance <= touchDistance;
     }
 
     /**
@@ -59,7 +61,9 @@ export class GoalButton extends BaseEntity {
      * Callback when button is pressed
      */
     onPressed() {
-        this.button.material.emissiveIntensity = 0.1;
+        // Highlight effect - full brightness
+        this.button.material.emissiveIntensity = 1.0;
+        this.button.material.color.setHex(0xffff00); // Change to yellow
 
         if (window.onGoalButtonPressed) {
             window.onGoalButtonPressed();
@@ -75,8 +79,10 @@ export class GoalButton extends BaseEntity {
     }
 
     update(dt) {
+        // Rotation animation - faster when not pressed
         if (!this.pressed) {
             this.button.rotation.y += dt * 1.5;
+            this.button.rotation.x += dt * 0.8;
         }
     }
 
