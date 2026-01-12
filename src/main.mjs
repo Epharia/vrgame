@@ -6,6 +6,10 @@ import { CollisionSystem } from "./systems/collisionSystem.mjs";
 import { World } from "./game/world/world.mjs";
 import { Player } from "./game/entities/player.mjs";
 import { EntityManager } from "./systems/entityManager.mjs";
+import { InteractionSystem } from "./systems/interactionSystem.mjs";
+import { GoalButton } from "./game/entities/goalButton.mjs";
+import { HUD } from "./systems/hud.mjs";
+import { CONFIG } from "./config.mjs";
 
 try {
     // Systems
@@ -14,6 +18,7 @@ try {
     SystemManager.register("Input", Input, ["Engine"]);
     SystemManager.register("World", World, ["Engine"]);
     SystemManager.register("CollisionSystem", CollisionSystem, []);
+    SystemManager.register("InteractionSystem", InteractionSystem, []);
 
     SystemManager.init();
 
@@ -24,6 +29,14 @@ try {
     });
     player.setPosition(World.getStartPosition());
     EntityManager.register(player, "Player");
+
+    const goalButton = new GoalButton(CONFIG.settings.maze.goalButtonPosition);
+    EntityManager.register(goalButton, "GoalButton");
+    InteractionSystem.register(goalButton);
+
+    window.onGoalButtonPressed = () => {
+        HUD.displayMessage("You escaped!", 4000);
+    };
 
     const { colliders } = World.getCollisionData();
     CollisionSystem.setWorld({ colliders });
@@ -37,6 +50,9 @@ try {
         const dt = Engine.time.delta();
         SystemManager.update(dt);
         EntityManager.updateAll(dt);
+
+        InteractionSystem.update(player.position);
+
         Engine.render();
     });
 } catch (error) {

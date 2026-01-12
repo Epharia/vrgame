@@ -1,5 +1,6 @@
 export const MAZE = {
     startPosition: { x: 2, y: 1.6, z: 2 },
+    goalButtonPosition: { x: 10, y: 1.5, z: 2 },
     grid: [
         /* 0 = air, 1 = wall */
         [1, 1, 1, 1, 1, 1, 1],
