@@ -12,7 +12,7 @@ export class Player extends BaseEntity {
         super();
         this.camera = camera;
 
-        this.position = new THREE.Vector3(0, CONFIG.settings.player.height, 0);
+        this.position = new THREE.Vector3(0, 0, 0);
 
         this.cameraRig = new THREE.Group();
         this.cameraRig.add(this.camera);
@@ -66,6 +66,7 @@ export class Player extends BaseEntity {
     setPosition(v) {
         this.position.copy(v);
         if (Engine.isVRActive()) {
+            this.position.y = 0;
             this.cameraRig.position.copy(this.position);
         } else {
             this.camera.position.copy(this.position);
