@@ -1,9 +1,9 @@
 import { defineConfig } from "vite";
-import basicSsl from "@vitejs/plugin-basic-ssl";
+// import basicSsl from "@vitejs/plugin-basic-ssl";
 
 export default defineConfig({
     base: "/vrgame/",
-    plugins: [basicSsl()],
+    // plugins: [basicSsl()],
     // server: {
     //     host: true,
     //     port: 5173,
