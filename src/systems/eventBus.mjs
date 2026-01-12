@@ -1,3 +1,5 @@
+//TODO use this when implementing interations like the experimental door opened by lever (saved in backup)
+// unused for now
 class EventBusSingleton {
     constructor() {
         this.listeners = new Map();

@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { CONFIG } from "../config.mjs";
 import { Time } from "./time.mjs";
+import { VRButton } from "three/addons/webxr/VRButton.js";
 
 class EngineSingleton {
     constructor() {
@@ -10,6 +11,7 @@ class EngineSingleton {
         this.scene = null;
         this.camera = null;
         this.time = new Time();
+        this.vrEnabled = false;
 
         this._resize = this.#resize.bind(this);
     }
@@ -25,7 +27,15 @@ class EngineSingleton {
         this.renderer = new THREE.WebGLRenderer({ antialias: true });
         this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, CONFIG.settings.rendering.maxPixelRatio));
         this.renderer.setSize(window.innerWidth, window.innerHeight);
+
+        this.renderer.xr.enabled = true;
+
         document.body.appendChild(this.renderer.domElement);
+
+        if (CONFIG.settings.vr.enabled) {
+            const vrButton = VRButton.createButton(this.renderer);
+            document.body.appendChild(vrButton);
+        }
 
         this.scene = new THREE.Scene();
         this.scene.background = new THREE.Color(CONFIG.colors.scene.background);
@@ -39,6 +49,14 @@ class EngineSingleton {
         this.camera.position.set(CONFIG.settings.camera.initialPosition.x, CONFIG.settings.camera.initialPosition.y, CONFIG.settings.camera.initialPosition.z);
 
         window.addEventListener("resize", this.#resize);
+    }
+
+    /**
+     * Checks if currently in VR mode
+     * @returns {boolean} Whether VR session is active
+     */
+    isVRActive() {
+        return this.renderer?.xr?.isPresenting || false;
     }
 
     /**

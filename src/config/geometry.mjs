@@ -1,5 +1,5 @@
 export const GEOMETRY = {
     floorSize: 50,
-    wallHeight: 5,
+    wallHeight: 12,
     wallThickness: 2,
 };

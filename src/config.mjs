@@ -10,6 +10,7 @@ import { CONTROLS } from "./config/controls.mjs";
 import { DOOR } from "./config/door.mjs";
 import { LEVER } from "./config/lever.mjs";
 import { INTERACT } from "./config/interact.mjs";
+import { VR } from "./config/vr.mjs";
 
 export const CONFIG = {
     colors: COLORS,
@@ -25,5 +26,6 @@ export const CONFIG = {
         door: DOOR,
         lever: LEVER,
         interact: INTERACT,
+        vr: VR,
     },
 };

@@ -17,6 +17,7 @@ try {
 
     SystemManager.init();
 
+    //TODO refactor
     // Init
     const player = new Player({
         camera: Engine.camera,
@@ -26,6 +27,10 @@ try {
 
     const { colliders } = World.getCollisionData();
     CollisionSystem.setWorld({ colliders });
+
+    //VR
+    player.initVR();
+    player.setColliders(colliders);
 
     // Game Loop
     Engine.setAnimationLoop(() => {
